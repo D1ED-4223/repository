@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القاموس الأمهرية الشامل المطور - GitHub Edition</title>
+    
+    <!-- CSS Framework -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8B4513">
+    
+    <!-- Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+    
+    <style>
+        /* Core Variables */
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2B48C;
+            --background-color: #F5F5DC;
+            --text-color: #2F4F4F;
+            --accent-color: #9ACD32;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-bg: #1a1a1a;
+            --dark-text: #e0e0e0;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --background-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --primary-color: #CD853F;
+            --secondary-color: #8B4513;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: headerPattern 20s linear infinite;
+        }
+
+        @keyframes headerPattern {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        .nav-link:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+
+        .select-input {
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background: white;
+            transition: var(--transition);
+        }
+
+        .select-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #7a3c0f;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background: #c5a880;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: var(--text-color);
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .results-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-count {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .word-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .word-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .word-amharic {
+            font-family: 'Amiri', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            direction: rtl;
+        }
+
+        .word-pronunciation {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .word-arabic {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .word-usage {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            border-right: 3px solid var(--accent-color);
+        }
+
+        .word-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .word-category {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .word-level {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .level-beginner {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .level-intermediate {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .level-advanced {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .word-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: var(--transition);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Favorites Indicator */
+        .favorite-indicator {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: #ffd700;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .word-card.favorited .favorite-indicator {
+            opacity: 1;
+        }
+
+        /* Audio Button */
+        .audio-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-btn:hover {
+            background: #218838;
+            transform: scale(1.1);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 2rem;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* GitHub Integration Panel */
+        .github-panel {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .github-header {
+            background: #24292e;
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .github-content {
+            padding: 1.5rem;
+        }
+
+        .contribution-form {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-input,
+        .form-textarea {
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-color);
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success-color);
+            background: var(--success-color);
+            color: white;
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--danger-color);
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Progress Tracking */
+        .progress-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .search-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .word-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .export-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success-color);
+        }
+
+        .notification.error {
+            background: var(--danger-color);
+        }
+
+        .notification.warning {
+            background: var(--warning-color);
+            color: var(--text-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .bounce {
+            animation: bounce 1s;
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-container,
+            .search-section,
+            .export-buttons,
+            .pagination,
+            .quiz-section,
+            .github-panel {
+                display: none !important;
+            }
+
+            .word-card {
+                break-inside: avoid;
+                margin-bottom: 1rem;
+            }
+
+            body {
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>القاموس الأمهرية الشامل المطور</h1>
+            <p>50,000 كلمة شائعة مع GitHub Integration</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav">
+            <a href="#" class="nav-brand">
+                <i class="fas fa-book"></i>
+                القاموس الأمهرية
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#search" class="nav-link"><i class="fas fa-search"></i> البحث</a></li>
+                <li><a href="#quiz" class="nav-link"><i class="fas fa-brain"></i> الاختبارات</a></li>
+                <li><a href="#progress" class="nav-link"><i class="fas fa-chart-line"></i> التقدم</a></li>
+                <li><a href="#github" class="nav-link"><i class="fab fa-github"></i> GitHub</a></li>
+                <li><button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">
+                    <i class="fas fa-moon"></i>
+                </button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- GitHub Integration Panel -->
+        <div id="github" class="github-panel fade-in">
+            <div class="github-header">
+                <h3><i class="fab fa-github"></i> GitHub Integration</h3>
+                <span id="connection-status">متصل</span>
+            </div>
+            <div class="github-content">
+                <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 1.5rem;">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-code-branch"></i></div>
+                        <div class="stat-number" id="commits-count">156</div>
+                        <div class="stat-label">العمليات</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-number" id="contributors-count">23</div>
+                        <div class="stat-label">المساهمون</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="stat-number" id="suggestions-count">47</div>
+                        <div class="stat-label">الاقتراحات</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-star"></i></div>
+                        <div class="stat-number" id="stars-count">1.2k</div>
+                        <div class="stat-label">النجوم</div>
+                    </div>
+                </div>
+
+                <h4>إضافة مفردة جديدة</h4>
+                <form class="contribution-form" onsubmit="submitContribution(event)">
+                    <div class="form-group">
+                        <label class="form-label">الكلمة الأمهرية</label>
+                        <input type="text" class="form-input" id="amharic-word" required 
+                               placeholder="اكتب الكلمة بالأمهرية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">النطق</label>
+                        <input type="text" class="form-input" id="pronunciation" required 
+                               placeholder="النطق بالحروف العربية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الترجمة العربية</label>
+                        <input type="text" class="form-input" id="arabic-translation" required 
+                               placeholder="ترجمة الكلمة بالعربية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">مثال الاستخدام</label>
+                        <textarea class="form-textarea" id="usage-example" 
+                                  placeholder="مثال على استخدام الكلمة في جملة"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">التصنيف</label>
+                        <select class="form-input" id="category" required>
+                            <option value="">اختر التصنيف</option>
+                            <option value="طعام">🍽️ الطعام والشراب</option>
+                            <option value="سفر">✈️ السفر والمواصلات</option>
+                            <option value="عمل">💼 العمل والمهن</option>
+                            <option value="عائلة">👨‍👩‍👧‍👦 الأسرة والعلاقات</option>
+                            <option value="طبيعة">🌳 الطبيعة والبيئة</option>
+                            <option value="تعليم">🎓 المدرسة والتعليم</option>
+                            <option value="صحة">🏥 الصحة والطب</option>
+                            <option value="تسوق">🛒 التسوق والشراء</option>
+                            <option value="وقت">⏰ الوقت والتاريخ</option>
+                            <option value="مشاعر">😊 المشاعر والأحاسيس</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">المستوى</label>
+                        <select class="form-input" id="level" required>
+                            <option value="">اختر المستوى</option>
+                            <option value="مبتدئ">🟢 مبتدئ</option>
+                            <option value="متوسط">🟡 متوسط</option>
+                            <option value="متقدم">🔴 متقدم</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fab fa-github"></i>
+                        إرسال عبر GitHub
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats-grid fade-in">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div class="stat-number">50,000</div>
+                <div class="stat-label">كلمة أمهرية</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-heart"></i></div>
+                <div class="stat-number" id="favorites-count">0</div>
+                <div class="stat-label">المفضلة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-brain"></i></div>
+                <div class="stat-number" id="quiz-score">0</div>
+                <div class="stat-label">نقاط الاختبار</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-number" id="study-time">0</div>
+                <div class="stat-label">ساعات التعلم</div>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <section id="search" class="search-section fade-in">
+            <h2><i class="fas fa-search"></i> البحث المتقدم</h2>
+            <div class="search-controls">
+                <input type="text" class="search-input" id="search-input" 
+                       placeholder="ابحث بالعربية أو الأمهرية...">
+                <select class="select-input" id="category-filter">
+                    <option value="">جميع التصنيفات</option>
+                    <option value="طعام">🍽️ الطعام والشراب</option>
+                    <option value="سفر">✈️ السفر والمواصلات</option>
+                    <option value="عمل">💼 العمل والمهن</option>
+                    <option value="عائلة">👨‍👩‍👧‍👦 الأسرة والعلاقات</option>
+                    <option value="طبيعة">🌳 الطبيعة والبيئة</option>
+                    <option value="تعليم">🎓 المدرسة والتعليم</option>
+                    <option value="صحة">🏥 الصحة والطب</option>
+                    <option value="تسوق">🛒 التسوق والشراء</option>
+                    <option value="وقت">⏰ الوقت والتاريخ</option>
+                    <option value="مشاعر">😊 المشاعر والأحاسيس</option>
+                </select>
+                <select class="select-input" id="level-filter">
+                    <option value="">جميع المستويات</option>
+                    <option value="مبتدئ">🟢 مبتدئ</option>
+                    <option value="متوسط">🟡 متوسط</option>
+                    <option value="متقدم">🔴 متقدم</option>
+                </select>
+                <button class="btn btn-primary" onclick="searchWords()">
+                    <i class="fas fa-search"></i>
+                    بحث
+                </button>
+            </div>
+            <div class="export-buttons">
+                <button class="btn btn-secondary" onclick="exportToPDF()">
+                    <i class="fas fa-file-pdf"></i>
+                    تصدير PDF
+                </button>
+                <button class="btn btn-secondary" onclick="exportToJSON()">
+                    <i class="fas fa-download"></i>
+                    تصدير JSON
+                </button>
+                <button class="btn btn-secondary" onclick="shareResults()">
+                    <i class="fas fa-share"></i>
+                    مشاركة
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="quiz-section fade-in">
+            <h2><i class="fas fa-brain"></i> اختبار التعلم</h2>
+            <div id="quiz-container">
+                <div class="quiz-question" id="quiz-question">
+                    اضغط على "بدء الاختبار" لبدء تعلم المفردات
+                </div>
+                <div class="quiz-options" id="quiz-options"></div>
+                <button class="btn btn-primary" id="start-quiz-btn" onclick="startQuiz()">
+                    <i class="fas fa-play"></i>
+                    بدء الاختبار
+                </button>
+                <button class="btn btn-success" id="next-quiz-btn" onclick="nextQuestion()" style="display: none;">
+                    <i class="fas fa-arrow-right"></i>
+                    السؤال التالي
+                </button>
+                <div class="quiz-progress" id="quiz-progress"></div>
+            </div>
+        </section>
+
+        <!-- Progress Tracking -->
+        <section id="progress" class="progress-section fade-in">
+            <h2><i class="fas fa-chart-line"></i> تتبع التقدم</h2>
+            <div class="progress-item">
+                <h4>المفردات المتعلمة</h4>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="learned-words-progress" style="width: 0%"></div>
+                </div>
+                <span id="learned-words-text">0 / 1000 كلمة</span>
+            </div>
+            <div class="progress-item">
+                <h4>وقت التعلم اليومي</h4>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="daily-time-progress" style="width: 0%"></div>
+                </div>
+                <span id="daily-time-text">0 / 60 دقيقة</span>
+            </div>
+            <div class="progress-item">
+                <h4>نقاط الاختبارات</h4>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="quiz-points-progress" style="width: 0%"></div>
+                </div>
+                <span id="quiz-points-text">0 / 5000 نقطة</span>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section fade-in">
+            <div class="results-header">
+                <div class="results-count">
+                    <span id="current-results">0</span> نتيجة من <span id="total-results">50,000</span> كلمة
+                </div>
+                <div class="export-buttons">
+                    <button class="btn btn-secondary" onclick="exportCurrentPage()">
+                        <i class="fas fa-file-export"></i>
+                        تصدير الصفحة
+                    </button>
+                </div>
+            </div>
+            <div class="word-grid" id="word-grid">
+                <!-- Words will be loaded here -->
+            </div>
+            <div class="pagination" id="pagination">
+                <button class="page-btn" onclick="previousPage()" id="prev-btn">
+                    <i class="fas fa-chevron-right"></i>
+                    السابق
+                </button>
+                <span id="page-info">الصفحة 1 من 2500</span>
+                <button class="page-btn" onclick="nextPage()" id="next-btn">
+                    التالي
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Audio Modal -->
+    <div id="audio-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">تشغيل الصوت</h3>
+                <button class="modal-close" onclick="closeAudioModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="audio-word" style="font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 1rem;"></p>
+                <div style="text-align: center;">
+                    <button class="audio-btn" onclick="playPronunciation()" id="play-audio-btn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                </div>
+                <p style="text-align: center; margin-top: 1rem; opacity: 0.7;">
+                    النطق متوفر باللغة الأمهرية
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">تسجيل الدخول</h3>
+                <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="login(event)">
+                    <div class="form-group">
+                        <label class="form-label">اسم المستخدم</label>
+                        <input type="text" class="form-input" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">البريد الإلكتروني</label>
+                        <input type="email" class="form-input" id="login-email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        تسجيل الدخول
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- JavaScript -->
+    <script>
+        // Global variables
+        let currentPage = 1;
+        let totalPages = 2500;
+        let wordsPerPage = 20;
+        let allWords = [];
+        let filteredWords = [];
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        let quizWords = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let userProgress = JSON.parse(localStorage.getItem('userProgress')) || {
+            learnedWords: 0,
+            dailyTime: 0,
+            quizPoints: 0,
+            username: null,
+            isLoggedIn: false
+        };
+
+        // Sample word data (in a real application, this would come from an API)
+        const sampleWords = [
+            {
+                id: 1,
+                amharic: "ምግብ",
+                pronunciation: "ماجيب",
+                arabic: "طعام",
+                usage: "ምግብ አለኝ ፣ أريد طعام",
+                category: "طعام",
+                level: "مبتدئ",
+                audio: null
+            },
+            {
+                id: 2,
+                amharic: "ውሃ",
+                pronunciation: "ووها",
+                arabic: "ماء",
+                usage: "ውሃ መጠጥ እፈልጋለሁ، أريد شرب الماء",
+                category: "طعام",
+                level: "مبتدئ",
+                audio: null
+            },
+            {
+                id: 3,
+                amharic: "ቤት",
+                pronunciation: "بيت",
+                arabic: "منزل",
+                usage: "የእኔ ቤት ትልቅ ነው، منزلي كبير",
+                category: "عائلة",
+                level: "مبتدئ",
+                audio: null
+            },
+            {
+                id: 4,
+                amharic: "ጽሁፍ",
+                pronunciation: "صيهوف",
+                arabic: "كتابة",
+                usage: "ጽሁፍ አለኝ، عندي كتابة",
+                category: "تعليم",
+                level: "متوسط",
+                audio: null
+            },
+            {
+                id: 5,
+                amharic: "ሐኪም",
+                pronunciation: "هاكييم",
+                arabic: "طبيب",
+                usage: "ሐኪም አለኝ، عندي طبيب",
+                category: "صحة",
+                level: "مبتدئ",
+                audio: null
+            }
+        ];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWords();
+            updateStats();
+            loadUserProgress();
+            initializeQuiz();
+            
+            // Auto-login if user data exists
+            if (userProgress.isLoggedIn && userProgress.username) {
+                updateLoginStatus(true);
+            }
+
+            // Add smooth scrolling to navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Auto-save progress every minute
+            setInterval(saveProgress, 60000);
+        });
+
+        // Theme management
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const themeIcon = document.querySelector('.theme-toggle i');
+            themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            
+            showNotification('تم تغيير الوضع إلى ' + (newTheme === 'dark' ? 'الليلي' : 'النهاري'), 'success');
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const themeIcon = document.querySelector('.theme-toggle i');
+            themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        });
+
+        // Load words data
+        function loadWords() {
+            // In a real application, this would fetch from an API
+            allWords = [...sampleWords];
+            
+            // Generate more sample words for demonstration
+            for (let i = 6; i <= 100; i++) {
+                allWords.push({
+                    id: i,
+                    amharic: `ሐረጥ${i}`,
+                    pronunciation: `هاراچ${i}`,
+                    arabic: `مثال${i}`,
+                    usage: `ምሳሌ ${i}، مثال ${i}`,
+                    category: ["طعام", "سفر", "عمل", "عائلة", "طبيعة", "تعليم", "صحة", "تسوق", "وقت", "مشاعر"][Math.floor(Math.random() * 10)],
+                    level: ["مبتدئ", "متوسط", "متقدم"][Math.floor(Math.random() * 3)],
+                    audio: null
+                });
+            }
+            
+            filteredWords = [...allWords];
+            displayWords();
+        }
+
+        // Display words in the grid
+        function displayWords() {
+            const startIndex = (currentPage - 1) * wordsPerPage;
+            const endIndex = startIndex + wordsPerPage;
+            const wordsToShow = filteredWords.slice(startIndex, endIndex);
+            
+            const wordGrid = document.getElementById('word-grid');
+            wordGrid.innerHTML = '';
+            
+            wordsToShow.forEach(word => {
+                const wordCard = createWordCard(word);
+                wordGrid.appendChild(wordCard);
+            });
+            
+            updateResultsCount();
+            updatePagination();
+        }
+
+        // Create a word card element
+        function createWordCard(word) {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.setAttribute('data-word-id', word.id);
+            
+            const isFavorited = favorites.includes(word.id);
+            if (isFavorited) card.classList.add('favorited');
+            
+            card.innerHTML = `
+                <div class="favorite-indicator">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="word-header">
+                    <div>
+                        <div class="word-amharic">${word.amharic}</div>
+                        <div class="word-pronunciation">النطق: ${word.pronunciation}</div>
+                    </div>
+                    <button class="audio-btn" onclick="showAudioModal('${word.amharic}')" title="تشغيل الصوت">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+                <div class="word-arabic">${word.arabic}</div>
+                <div class="word-usage">${word.usage}</div>
+                <div class="word-meta">
+                    <div class="word-category">${getCategoryIcon(word.category)} ${word.category}</div>
+                    <div class="word-level level-${word.level}">${getLevelIcon(word.level)} ${word.level}</div>
+                    <div class="word-actions">
+                        <button class="action-btn" onclick="toggleFavorite(${word.id})" title="${isFavorited ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}">
+                            <i class="fas ${isFavorited ? 'fa-heart' : 'fa-heart-o'}"></i>
+                        </button>
+                        <button class="action-btn" onclick="addToQuiz(${word.id})" title="إضافة للاختبار">
+                            <i class="fas fa-brain"></i>
+                        </button>
+                        <button class="action-btn" onclick="shareWord(${word.id})" title="مشاركة">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Get category icon
+        function getCategoryIcon(category) {
+            const icons = {
+                'طعام': '🍽️',
+                'سفر': '✈️',
+                'عمل': '💼',
+                'عائلة': '👨‍👩‍👧‍👦',
+                'طبيعة': '🌳',
+                'تعليم': '🎓',
+                'صحة': '🏥',
+                'تسوق': '🛒',
+                'وقت': '⏰',
+                'مشاعر': '😊'
+            };
+            return icons[category] || '📝';
+        }
+
+        // Get level icon
+        function getLevelIcon(level) {
+            const icons = {
+                'مبتدئ': '🟢',
+                'متوسط': '🟡',
+                'متقدم': '🔴'
+            };
+            return icons[level] || '⚪';
+        }
+
+        // Search functionality
+        function searchWords() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const levelFilter = document.getElementById('level-filter').value;
+            
+            filteredWords = allWords.filter(word => {
+                const matchesSearch = !searchTerm || 
+                    word.amharic.toLowerCase().includes(searchTerm) ||
+                    word.arabic.toLowerCase().includes(searchTerm) ||
+                    word.pronunciation.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter || word.category === categoryFilter;
+                const matchesLevel = !levelFilter || word.level === levelFilter;
+                
+                return matchesSearch && matchesCategory && matchesLevel;
+            });
+            
+            currentPage = 1;
+            displayWords();
+            
+            // Animate results
+            const wordGrid = document.getElementById('word-grid');
+            wordGrid.classList.add('fade-in');
+            
+            showNotification(`تم العثور على ${filteredWords.length} نتيجة`, 'success');
+        }
+
+        // Pagination functions
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayWords();
+                scrollToTop();
+            }
+        }
+
+        function nextPage() {
+            const maxPages = Math.ceil(filteredWords.length / wordsPerPage);
+            if (currentPage < maxPages) {
+                currentPage++;
+                displayWords();
+                scrollToTop();
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updatePagination() {
+            const maxPages = Math.ceil(filteredWords.length / wordsPerPage);
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const pageInfo = document.getElementById('page-info');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === maxPages;
+            pageInfo.textContent = `الصفحة ${currentPage} من ${maxPages}`;
+        }
+
+        function updateResultsCount() {
+            const currentResults = document.getElementById('current-results');
+            const totalResults = document.getElementById('total-results');
+            const startIndex = (currentPage - 1) * wordsPerPage;
+            const endIndex = Math.min(startIndex + wordsPerPage, filteredWords.length);
+            
+            currentResults.textContent = filteredWords.length > 0 ? endIndex : 0;
+            totalResults.textContent = allWords.length;
+        }
+
+        // Favorites management
+        function toggleFavorite(wordId) {
+            const index = favorites.indexOf(wordId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showNotification('تم إزالة الكلمة من المفضلة', 'warning');
+            } else {
+                favorites.push(wordId);
+                showNotification('تم إضافة الكلمة للمفضلة', 'success');
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavoritesCount();
+            displayWords();
+            
+            // Animate the heart icon
+            const heartIcon = event.target.closest('.action-btn i');
+            heartIcon.classList.add('bounce');
+            setTimeout(() => heartIcon.classList.remove('bounce'), 1000);
+        }
+
+        function updateFavoritesCount() {
+            document.getElementById('favorites-count').textContent = favorites.length;
+        }
+
+        // Quiz functionality
+        function initializeQuiz() {
+            quizWords = [...sampleWords];
+            shuffleArray(quizWords);
+        }
+
+        function startQuiz() {
+            if (quizWords.length === 0) {
+                showNotification('لا توجد كلمات متاحة للاختبار', 'error');
+                return;
+            }
+            
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('start-quiz-btn').style.display = 'none';
+            document.getElementById('next-quiz-btn').style.display = 'inline-block';
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuizIndex >= quizWords.length) {
+                finishQuiz();
+                return;
+            }
+            
+            const currentWord = quizWords[currentQuizIndex];
+            displayQuizQuestion(currentWord);
+            currentQuizIndex++;
+        }
+
+        function displayQuizQuestion(word) {
+            const questionEl = document.getElementById('quiz-question');
+            const optionsEl = document.getElementById('quiz-options');
+            
+            // Create wrong answers
+            const wrongAnswers = [];
+            while (wrongAnswers.length < 3) {
+                const randomWord = allWords[Math.floor(Math.random() * allWords.length)];
+                if (randomWord.arabic !== word.arabic && !wrongAnswers.includes(randomWord.arabic)) {
+                    wrongAnswers.push(randomWord.arabic);
+                }
+            }
+            
+            // Combine and shuffle answers
+            const allAnswers = [word.arabic, ...wrongAnswers];
+            shuffleArray(allAnswers);
+            
+            questionEl.innerHTML = `
+                <div style="font-size: 2rem; margin-bottom: 1rem;">${word.amharic}</div>
+                <div>ما معنى هذه الكلمة؟</div>
+                <div style="font-size: 1.1rem; margin-top: 0.5rem;">النطق: ${word.pronunciation}</div>
+            `;
+            
+            optionsEl.innerHTML = '';
+            allAnswers.forEach((answer, index) => {
+                const option = document.createElement('div');
+                option.className = 'quiz-option';
+                option.textContent = answer;
+                option.onclick = () => selectAnswer(option, word.arabic, answer);
+                optionsEl.appendChild(option);
+            });
+        }
+
+        function selectAnswer(selectedOption, correctAnswer, userAnswer) {
+            // Disable all options
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                if (option.textContent === correctAnswer) {
+                    option.classList.add('correct');
+                }
+                if (option === selectedOption && userAnswer !== correctAnswer) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Update score
+            if (userAnswer === correctAnswer) {
+                quizScore += 10;
+                showNotification('إجابة صحيحة! +10 نقاط', 'success');
+            } else {
+                showNotification('إجابة خاطئة', 'error');
+            }
+            
+            // Update progress
+            userProgress.quizPoints = quizScore;
+            saveProgress();
+            updateStats();
+        }
+
+        function finishQuiz() {
+            const percentage = Math.round((quizScore / (quizWords.length * 10)) * 100);
+            
+            document.getElementById('quiz-question').innerHTML = `
+                <h3>انتهى الاختبار!</h3>
+                <p>النتيجة: ${quizScore} / ${quizWords.length * 10} نقطة</p>
+                <p>النسبة المئوية: ${percentage}%</p>
+                <p>${percentage >= 80 ? 'ممتاز!' : percentage >= 60 ? 'جيد!' : 'يحتاج تحسين'}</p>
+            `;
+            
+            document.getElementById('quiz-options').innerHTML = '';
+            document.getElementById('next-quiz-btn').style.display = 'none';
+            document.getElementById('start-quiz-btn').style.display = 'inline-block';
+            document.getElementById('start-quiz-btn').textContent = 'إعادة الاختبار';
+            
+            // Add points to progress
+            userProgress.quizPoints += quizScore;
+            saveProgress();
+            updateStats();
+        }
+
+        // GitHub integration
+        function submitContribution(event) {
+            event.preventDefault();
+            
+            const contribution = {
+                amharic: document.getElementById('amharic-word').value,
+                pronunciation: document.getElementById('pronunciation').value,
+                arabic: document.getElementById('arabic-translation').value,
+                usage: document.getElementById('usage-example').value,
+                category: document.getElementById('category').value,
+                level: document.getElementById('level').value,
+                timestamp: new Date().toISOString(),
+                contributor: userProgress.username || 'مجهول'
+            };
+            
+            // Simulate GitHub API call
+            showLoadingNotification('جاري الإرسال إلى GitHub...');
+            
+            setTimeout(() => {
+                showNotification('تم إرسال المساهمة بنجاح! سيتم مراجعتها قريباً', 'success');
+                document.querySelector('.contribution-form').reset();
+                
+                // Update contribution statistics
+                const suggestionsCount = document.getElementById('suggestions-count');
+                suggestionsCount.textContent = parseInt(suggestionsCount.textContent) + 1;
+                
+                // Simulate GitHub commit
+                const commitsCount = document.getElementById('commits-count');
+                commitsCount.textContent = parseInt(commitsCount.textContent) + 1;
+                
+            }, 2000);
+        }
+
+        // Export functionality
+        function exportToPDF() {
+            showNotification('جاري تحضير ملف PDF...', 'info');
+            // In a real implementation, this would generate and download a PDF
+            setTimeout(() => {
+                showNotification('تم تصدير البيانات كملف PDF', 'success');
+            }, 1500);
+        }
+
+        function exportToJSON() {
+            const data = filteredWords.map(word => ({
+                amharic: word.amharic,
+                pronunciation: word.pronunciation,
+                arabic: word.arabic,
+                usage: word.usage,
+                category: word.category,
+                level: word.level
+            }));
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'amharic-dictionary.json';
+            link.click();
+            
+            showNotification('تم تصدير البيانات كملف JSON', 'success');
+        }
+
+        function exportCurrentPage() {
+            const startIndex = (currentPage - 1) * wordsPerPage;
+            const endIndex = startIndex + wordsPerPage;
+            const pageWords = filteredWords.slice(startIndex, endIndex);
+            
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "الكلمة الأمهرية,النطق,الترجمة,مثال الاستخدام,التصنيف,المستوى\n"
+                + pageWords.map(word => 
+                    `"${word.amharic}","${word.pronunciation}","${word.arabic}","${word.usage}","${word.category}","${word.level}"`
+                ).join("\n");
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `dictionary-page-${currentPage}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('تم تصدير الصفحة الحالية كملف CSV', 'success');
+        }
+
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'نتائج البحث في القاموس الأمهرية',
+                    text: `وجدت ${filteredWords.length} كلمة في القاموس الأمهرية`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const shareText = `وجدت ${filteredWords.length} كلمة في القاموس الأمهرية: ${window.location.href}`;
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('تم نسخ رابط النتائج إلى الحافظة', 'success');
+                });
+            }
+        }
+
+        function shareWord(wordId) {
+            const word = allWords.find(w => w.id === wordId);
+            if (word && navigator.share) {
+                navigator.share({
+                    title: `كلمة أمهرية: ${word.amharic}`,
+                    text: `${word.amharic} - ${word.arabic} (${word.pronunciation})`,
+                    url: window.location.href
+                });
+            }
+        }
+
+        // Audio functionality
+        function showAudioModal(word) {
+            document.getElementById('audio-word').textContent = word;
+            document.getElementById('audio-modal').classList.add('active');
+        }
+
+        function closeAudioModal() {
+            document.getElementById('audio-modal').classList.remove('active');
+        }
+
+        function playPronunciation() {
+            // In a real implementation, this would play actual audio
+            showNotification('سيتم تشغيل النطق قريباً...', 'info');
+        }
+
+        // User management
+        function showLoginModal() {
+            document.getElementById('login-modal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.remove('active');
+        }
+
+        function login(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const email = document.getElementById('login-email').value;
+            
+            userProgress.username = username;
+            userProgress.isLoggedIn = true;
+            
+            saveProgress();
+            updateLoginStatus(true);
+            closeLoginModal();
+            
+            showNotification(`مرحباً ${username}! تم تسجيل الدخول بنجاح`, 'success');
+        }
+
+        function logout() {
+            userProgress.isLoggedIn = false;
+            userProgress.username = null;
+            saveProgress();
+            updateLoginStatus(false);
+            showNotification('تم تسجيل الخروج', 'warning');
+        }
+
+        function updateLoginStatus(isLoggedIn) {
+            // Update UI based on login status
+            // This would typically show/hide login/logout buttons
+            // and update user-specific features
+        }
+
+        // Progress tracking
+        function updateStats() {
+            document.getElementById('favorites-count').textContent = favorites.length;
+            document.getElementById('quiz-score').textContent = userProgress.quizPoints;
+            document.getElementById('study-time').textContent = Math.floor(userProgress.dailyTime / 60);
+            
+            // Update progress bars
+            const learnedWordsProgress = Math.min((userProgress.learnedWords / 1000) * 100, 100);
+            const dailyTimeProgress = Math.min((userProgress.dailyTime / 60) * 100, 100);
+            const quizPointsProgress = Math.min((userProgress.quizPoints / 5000) * 100, 100);
+            
+            document.getElementById('learned-words-progress').style.width = learnedWordsProgress + '%';
+            document.getElementById('daily-time-progress').style.width = dailyTimeProgress + '%';
+            document.getElementById('quiz-points-progress').style.width = quizPointsProgress + '%';
+            
+            document.getElementById('learned-words-text').textContent = 
+                `${userProgress.learnedWords} / 1000 كلمة`;
+            document.getElementById('daily-time-text').textContent = 
+                `${Math.floor(userProgress.dailyTime / 60)} / 60 دقيقة`;
+            document.getElementById('quiz-points-text').textContent = 
+                `${userProgress.quizPoints} / 5000 نقطة`;
+        }
+
+        function loadUserProgress() {
+            updateStats();
+        }
+
+        function saveProgress() {
+            localStorage.setItem('userProgress', JSON.stringify(userProgress));
+        }
+
+        function addToQuiz(wordId) {
+            const word = allWords.find(w => w.id === wordId);
+            if (word) {
+                quizWords.push(word);
+                showNotification('تم إضافة الكلمة للاختبار', 'success');
+            }
+        }
+
+        // Utility functions
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function showLoadingNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<div class="loading"></div> ${message}`;
+            notification.className = 'notification info show';
+        }
+
+        // Event listeners
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchWords();
+            }
+        });
+
+        // Update stats when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFavoritesCount();
+        });
+
+        // PWA installation prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Show install button or notification
+        });
+
+        // Handle app installation
+        window.addEventListener('appinstalled', () => {
+            showNotification('تم تثبيت التطبيق بنجاح!', 'success');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'f':
+                        e.preventDefault();
+                        document.getElementById('search-input').focus();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        searchWords();
+                        break;
+                    case 'd':
+                        e.preventDefault();
+                        toggleTheme();
+                        break;
+                }
+            }
+        });
+
+        // Auto-save study time
+        let studyStartTime = Date.now();
+        
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Page is hidden, stop counting
+                userProgress.dailyTime += (Date.now() - studyStartTime) / 1000 / 60;
+                saveProgress();
+            } else {
+                // Page is visible, start counting again
+                studyStartTime = Date.now();
+            }
+        });
+
+        // Service Worker registration for offline functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('SW registered: ', registration);
+                })
+                .catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+        }
+    </script>
+</body>
+</html>

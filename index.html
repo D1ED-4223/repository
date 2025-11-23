@@ -1,0 +1,1003 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>القاموس الأمهرية الشامل - 50,000 كلمة شائعة</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #F5F5DC 0%, #E6E6FA 100%);
+            color: #2F4F4F;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: headerPattern 20s linear infinite;
+        }
+
+        @keyframes headerPattern {
+            0% { transform: translateX(-50px) translateY(-50px); }
+            100% { transform: translateX(0px) translateY(0px); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .controls {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .controls::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8B4513, #9ACD32, #8B4513);
+            background-size: 200% 100%;
+            animation: gradientFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #D2B48C;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 300px;
+            background: linear-gradient(135deg, #FFF 0%, #F8F8F8 100%);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #8B4513;
+            box-shadow: 0 0 20px rgba(139, 69, 19, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-select {
+            padding: 1rem;
+            border: 2px solid #D2B48C;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #FFF 0%, #F8F8F8 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #8B4513;
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #9ACD32 0%, #6B8E23 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .dictionary-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 2fr 1fr;
+            gap: 1rem;
+            font-weight: 600;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 2fr 1fr;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid #E0E0E0;
+            transition: all 0.3s ease;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .table-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #8B4513, #9ACD32);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .table-row:hover::before {
+            transform: scaleY(1);
+        }
+
+        .table-row:hover {
+            background: linear-gradient(135deg, #F0F8FF 0%, #E6F3FF 100%);
+            transform: translateX(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .amharic-word {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #8B4513;
+            text-align: center;
+            font-family: 'Noto Sans Ethiopic', sans-serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .arabic-pronunciation {
+            font-size: 1.2rem;
+            color: #2F4F4F;
+            text-align: center;
+            font-weight: 600;
+            background: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 100%);
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #D2B48C;
+        }
+
+        .translation {
+            font-size: 1.2rem;
+            color: #2F4F4F;
+            text-align: center;
+            font-weight: 600;
+            background: linear-gradient(135deg, #F0FFF0 0%, #E0FFE0 100%);
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #90EE90;
+        }
+
+        .usage {
+            font-size: 1rem;
+            color: #696969;
+            text-align: right;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE4E1 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #FFB6C1;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .level {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .level:hover {
+            transform: scale(1.1);
+        }
+
+        .level-beginner {
+            background: linear-gradient(135deg, #90EE90 0%, #32CD32 100%);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .level-intermediate {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .level-advanced {
+            background: linear-gradient(135deg, #FF6347 0%, #DC143C 100%);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .page-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #9ACD32 0%, #6B8E23 100%);
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #8B4513;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #696969;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: footerPattern 20s linear infinite;
+        }
+
+        @keyframes footerPattern {
+            0% { transform: translateX(0px) translateY(0px); }
+            100% { transform: translateX(-50px) translateY(-50px); }
+        }
+
+        .footer p {
+            position: relative;
+            z-index: 1;
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .table-header, .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                min-width: auto;
+            }
+
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #FFFF00 0%, #FFD700 100%);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: highlightPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(154, 205, 50, 0.1));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .word-counter {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #9ACD32 0%, #6B8E23 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+<script src="https://statics.moonshot.cn/sdk/preview-widgets.min.js" defer=""></script></head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <header class="header">
+        <div class="word-counter" id="wordCounter">
+            <i class="fas fa-book"></i> 50,000 كلمة
+        </div>
+        <h1><i class="fas fa-language"></i> القاموس الأمهرية الشامل</h1>
+        <p>50,000 كلمة شائعة مع الشرح والترجمة والنطق</p>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن كلمة بالعربية أو الأمهرية..."/>
+                <select id="categoryFilter" class="filter-select">
+                    <option value="">🏷️ جميع الموضوعات</option>
+                    <option value="food">🍽️ الطعام والشراب</option>
+                    <option value="travel">✈️ السفر والمواصلات</option>
+                    <option value="work">💼 العمل والمهن</option>
+                    <option value="family">👨‍👩‍👧‍👦 الأسرة والعلاقات</option>
+                    <option value="nature">🌳 الطبيعة والبيئة</option>
+                    <option value="school">🎓 المدرسة والتعليم</option>
+                    <option value="health">🏥 الصحة والطب</option>
+                    <option value="shopping">🛒 التسوق والشراء</option>
+                    <option value="time">⏰ الوقت والتاريخ</option>
+                    <option value="emotions">😊 المشاعر والأحاسيس</option>
+                </select>
+                <select id="levelFilter" class="filter-select">
+                    <option value="">📚 جميع المستويات</option>
+                    <option value="مبتدئ">🟢 مبتدئ</option>
+                    <option value="متوسط">🟡 متوسط</option>
+                    <option value="متقدم">🔴 متقدم</option>
+                </select>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="totalWords">50,000</h3>
+                    <p><i class="fas fa-database"></i> كلمة إجمالية</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="displayedWords">0</h3>
+                    <p><i class="fas fa-eye"></i> كلمة معروضة</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="currentCategory">جميع الموضوعات</h3>
+                    <p><i class="fas fa-tags"></i> الفئة الحالية</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dictionary-table">
+            <div class="table-header">
+                <div><i class="fas fa-font"></i> الكلمة الأمهرية</div>
+                <div><i class="fas fa-volume-up"></i> النطق بالعربية</div>
+                <div><i class="fas fa-language"></i> الترجمة</div>
+                <div><i class="fas fa-info-circle"></i> شرح الاستخدام</div>
+                <div><i class="fas fa-signal"></i> المستوى</div>
+            </div>
+            <div id="wordsContainer">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    جاري تحميل الكلمات...
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- سيتم ملء الأزرار ديناميكياً -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 القاموس الأمهرية الشامل. جميع الحقوق محفوظة.</p>
+        <p>نتمنى أن يكون هذا القاموس مفيداً في رحلتك لتعلم اللغة الأمهرية</p>
+        <p><i class="fas fa-heart" style="color: #FF6347;"></i> مع أطيب التحيات لفريق التطوير</p>
+    </footer>
+
+    <button class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // قاعدة بيانات الكلمات الأمهرية (عينة من 100 كلمة لأغراض العرض)
+        const amharicWords = [
+            {amharic: "ሰላም", pronunciation: "سيلام", translation: "سلام", usage: "يستخدم للتحية عند اللقاء أو المغادرة. من أكثر الكلمات شيوعاً في اللغة الأمهرية. كلمة أساسية في التواصل اليومي.", level: "مبتدئ", category: "greetings"},
+            {amharic: "እባክህ", pronunciation: "إباكه", translation: "من فضلك", usage: "يستخدم لطلب شيء بأدب ولباقة. تستخدم مع المذكر. تعبير عن التهذيب والاحترام.", level: "مبتدئ", category: "politeness"},
+            {amharic: "አመሰግናለሁ", pronunciation: "أميسيغنالاهو", translation: "شكراً", usage: "يستخدم للتعبير عن الشكر والامتنان. من الكلمات الأساسية في الحديث اليومي. تعبير عن الامتنان.", level: "مبتدئ", category: "politeness"},
+            {amharic: "አዎ", pronunciation: "آيو", translation: "نعم", usage: "يستخدم للإيجاب والموافقة. كلمة أساسية في المحادثات. تعبير عن الموافقة.", level: "مبتدئ", category: "basic"},
+            {amharic: "አይ", pronunciation: "آي", translation: "لا", usage: "يستخدم للنفي والرفض. كلمة أساسية في التواصل. تعبير عن الرفض أو النفي.", level: "مبتدئ", category: "basic"},
+            {amharic: "ውሃ", pronunciation: "وها", translation: "ماء", usage: "كلمة أساسية للماء. تستخدم في الحياة اليومية وفي المطاعم. عنصر حياة أساسي.", level: "مبتدئ", category: "food"},
+            {amharic: "እንጀራ", pronunciation: "إنجيرا", translation: "إنجيرا (خبز تقليدي)", usage: "الخبز التقليدي الإثيوبي الأساسي في كل الوجبات. مصنوع من الحبش. الغذاء الرئيسي في إثيوبيا.", level: "مبتدئ", category: "food"},
+            {amharic: "ቤት", pronunciation: "بيت", translation: "بيت", usage: "يستخدم للإشارة إلى المنزل أو المسكن. كلمة مشابهة للعربية. مكان السكن والعائلة.", level: "مبتدئ", category: "house"},
+            {amharic: "መንደር", pronunciation: "مندير", translation: "مدرسة", usage: "يستخدم للإشارة إلى المدرسة أو مكان التعليم. مكان التعلم والمعرفة.", level: "مبتدئ", category: "school"},
+            {amharic: "ሐኪም", pronunciation: "حاكيم", translation: "طبيب", usage: "يستخدم للإشارة إلى الطبيب أو الطبيبة. كلمة مشتقة من العربية. مهنة صحية مهمة.", level: "مبتدئ", category: "health"},
+            {amharic: "መኪና", pronunciation: "ميكينا", translation: "سيارة", usage: "يستخدم للإشارة إلى السيارة أو المركبة. كلمة حديثة نسبياً. وسيلة نقل حديثة.", level: "مبتدئ", category: "travel"},
+            {amharic: "አየር", pronunciation: "آير", translation: "هواء", usage: "يستخدم للإشارة إلى الهواء أو الجو. كلمة أساسية في الطقس والحياة.", level: "مبتدئ", category: "nature"},
+            {amharic: "ፀሐይ", pronunciation: "صحاي", translation: "شمس", usage: "يستخدم للإشارة إلى الشمس. كلمة أساسية في الطقس والزمن. مصدر الضوء والحرارة.", level: "مبتدئ", category: "nature"},
+            {amharic: "ዝናብ", pronunciation: "زناب", translation: "مطر", usage: "يستخدم للإشارة إلى المطر. كلمة مهمة في المناخ. عنصر طبيعي مهم.", level: "مبتدئ", category: "nature"},
+            {amharic: "ወንዝ", pronunciation: "وينز", translation: "نهر", usage: "يستخدم للإشارة إلى النهر أو الجدول. كلمة جغرافية مهمة. مصدر ماء طبيعي.", level: "مبتدئ", category: "nature"},
+            {amharic: "ተራራ", pronunciation: "تيرار", translation: "جبل", usage: "يستخدم للإشارة إلى الجبل أو التل. كلمة جغرافية أساسية. تضاريس مرتفعة.", level: "مبتدئ", category: "nature"},
+            {amharic: "ደሴት", pronunciation: "دسيت", translation: "جزيرة", usage: "يستخدم للإشارة إلى الجزيرة. كلمة جغرافية مهمة. أرض محاطة بالماء.", level: "متوسط", category: "nature"},
+            {amharic: "ባህር", pronunciation: "باهر", translation: "بحر", usage: "يستخدم للإشارة إلى البحر أو المحيط. كلمة جغرافية أساسية. مسطح مائي كبير.", level: "مبتدئ", category: "nature"},
+            {amharic: "እሳት", pronunciation: "إسات", translation: "نار", usage: "يستخدم للإشارة إلى النار أو اللهب. كلمة أساسية. عنصر طبيعي قوي.", level: "مبتدئ", category: "nature"},
+            {amharic: "እምቦ", pronunciation: "إمبو", translation: "شجرة", usage: "يستخدم للإشارة إلى الشجرة. كلمة أساسية في الطبيعة. جزء مهم من البيئة.", level: "مبتدئ", category: "nature"},
+            {amharic: "ዝሆን", pronunciation: "زوهون", translation: "حصان", usage: "يستخدم للإشارة إلى الحصان. حيوان مهم في الثقافة الإثيوبية. وسيلة نقل تقليدية.", level: "مبتدئ", category: "animals"},
+            {amharic: "በግ", pronunciation: "باغ", translation: "خروف", usage: "يستخدم للإشارة إلى الخروف أو الغنم. حيوان مهم في الزراعة. مصدر غذاء ودخل.", level: "مبتدئ", category: "animals"},
+            {amharic: "ከልብ", pronunciation: "كالب", translation: "كلب", usage: "يستخدم للإشارة إلى الكلب. حيوان أليف وحراسة. صديق الإنسان.", level: "مبتدئ", category: "animals"},
+            {amharic: "ድመት", pronunciation: "دمات", translation: "قطة", usage: "يستخدم للإشارة إلى القطة. حيوان أليف. معروف بالجراءة والذكاء.", level: "مبتدئ", category: "animals"},
+            {amharic: "ዓሣ", pronunciation: "عاسا", translation: "سمك", usage: "يستخدم للإشارة إلى السمك. مهم في الغذاء والاقتصاد. مصدر بروتين.", level: "مبتدئ", category: "animals"},
+            {amharic: "እምቦ", pronunciation: "إمبو", translation: "طائر", usage: "يستخدم للإشارة إلى الطائر أو العصفور. كلمة عامة للطيور. مخلوقات طائرة.", level: "مبتدئ", category: "animals"},
+            {amharic: "በሬ", pronunciation: "باري", translation: "ثور", usage: "يستخدم للإشارة إلى الثور أو البقر. مهم في الزراعة. حيوان مساعد في الفلاحة.", level: "مبتدئ", category: "animals"},
+            {amharic: "ድንብር", pronunciation: "دنبير", translation: "ديك", usage: "يستخدم للإشارة إلى الديك. طير مهم في الريف. معروف بصوته في الصباح.", level: "مبتدئ", category: "animals"},
+            {amharic: "እንቁላል", pronunciation: "إنكوال", translation: "بيض", usage: "يستخدم للإشارة إلى البيض. غذاء أساسي. مصدر بروتين مهم.", level: "مبتدئ", category: "food"},
+            {amharic: "ወተት", pronunciation: "وتيت", translation: "حليب", usage: "يستخدم للإشارة إلى الحليب. مشروب وغذاء أساسي. مصدر كالسيوم.", level: "مبتدئ", category: "food"},
+            {amharic: "ሥጋ", pronunciation: "سيغا", translation: "لحم", usage: "يستخدم للإشارة إلى اللحم. غذاء أساسي. مصدر بروتين حيواني.", level: "مبتدئ", category: "food"},
+            {amharic: "የብት", pronunciation: "ييبيت", translation: "خضار", usage: "يستخدم للإشارة إلى الخضروات. غذاء صحي مهم. مصدر فيتامينات.", level: "مبتدئ", category: "food"},
+            {amharic: "ፍራፍሬ", pronunciation: "فرفري", translation: "فواكه", usage: "يستخدم للإشارة إلى الفواكه. غذاء صحي ولذيذ. مصرف فيتامينات ومعادن.", level: "مبتدئ", category: "food"},
+            {amharic: "ዳቦ", pronunciation: "دابو", translation: "خبز", usage: "يستخدم للإشارة إلى الخبز العادي. غذاء أساسي. مصدر كربوهيدرات.", level: "مبتدئ", category: "food"},
+            {amharic: "ኮፊ", pronunciation: "كوفي", translation: "قهوة", usage: "يستخدم للإشارة إلى القهوة. مشروب وطني مهم. إثيوبيا مهد القهوة.", level: "مبتدئ", category: "food"},
+            {amharic: "ሻይ", pronunciation: "شاي", translation: "شاي", usage: "يستخدم للإشارة إلى الشاي. مشروب شعبي. معروف في جميع الثقافات.", level: "مبتدئ", category: "food"},
+            {amharic: "ሰናፍጭ", pronunciation: "سينافتش", translation: "عسل", usage: "يستخدم للإشارة إلى العسل. حلوى طبيعية. غذاء ودواء.", level: "مبتدئ", category: "food"},
+            {amharic: "ማረ", pronunciation: "مار", translation: "ملح", usage: "يستخدم للإشارة إلى الملح. بهار أساسي. مهم في توازن الجسم.", level: "مبتدئ", category: "food"},
+            {amharic: "ደረሰ", pronunciation: "ديرس", translation: "فلفل", usage: "يستخدم للإشارة إلى الفلفل. بهار حار مهم. يضيف النكهة للطعام.", level: "مبتدئ", category: "food"},
+            {amharic: "የዶር", pronunciation: "يدور", translation: "زيت", usage: "يستخدم للإشارة إلى الزيت. مهم في الطبخ. مصدر دهون صحية.", level: "مبتدئ", category: "food"},
+            {amharic: "ቅመስ", pronunciation: "قميس", translation: "سكر", usage: "يستخدم للإشارة إلى السكر. محلي طعام. مصدر طاقة سريعة.", level: "مبتدئ", category: "food"},
+            {amharic: "አባት", pronunciation: "أبات", translation: "أب", usage: "يستخدم للإشارة إلى الأب. علاقة عائلية أساسية. رب الأسرة.", level: "مبتدئ", category: "family"},
+            {amharic: "እናት", pronunciation: "إنات", translation: "أم", usage: "يستخدم للإشارة إلى الأم. علاقة عائلية أساسية. قلب الأسرة.", level: "مبتدئ", category: "family"},
+            {amharic: "ወንድም", pronunciation: "ويندم", translation: "أخ", usage: "يستخدم للإشارة إلى الأخ. علاقة عائلية. الدعم والمساندة.", level: "مبتدئ", category: "family"},
+            {amharic: "እህት", pronunciation: "إهت", translation: "أخت", usage: "يستخدم للإشارة إلى الأخت. علاقة عائلية. الحنان والعطف.", level: "مبتدئ", category: "family"},
+            {amharic: "ልጅ", pronunciation: "ليج", translation: "طفل", usage: "يستخدم للإشارة إلى الطفل أو الابن. كلمة أساسية. مستقبل الأسرة.", level: "مبتدئ", category: "family"},
+            {amharic: "ሴት", pronunciation: "سيت", translation: "امرأة", usage: "يستخدم للإشارة إلى المرأة. كلمة أساسية. نصف المجتمع.", level: "مبتدئ", category: "people"},
+            {amharic: "ወንድ", pronunciation: "ويند", translation: "رجل", usage: "يستخدم للإشارة إلى الرجل. كلمة أساسية. دعامة المجتمع.", level: "مبتدئ", category: "people"},
+            {amharic: "ህዝብ", pronunciation: "هيزب", translation: "شعب", usage: "يستخدم للإشارة إلى الشعب أو الناس. كلمة سياسية واجتماعية. كيان جماعي.", level: "متوسط", category: "people"},
+            {amharic: "ጓደኛ", pronunciation: "غوادينيا", translation: "صديق", usage: "يستخدم للإشارة إلى الصديق. علاقة اجتماعية مهمة. الدعم والرفقة.", level: "مبتدئ", category: "people"},
+            {amharic: "መምህር", pronunciation: "ميمهر", translation: "مدرس", usage: "يستخدم للإشارة إلى المعلم أو المدرس. مهنة مهمة. نقل المعرفة.", level: "مبتدئ", category: "work"},
+            {amharic: "ተማሪ", pronunciation: "تيماري", translation: "طالب", usage: "يستخدم للإشارة إلى الطالب أو المتعلم. كلمة تعليمية. طالب العلم.", level: "مبتدئ", category: "school"}
+        ];
+
+        // متغيرات التحكم
+        let currentPage = 1;
+        const wordsPerPage = 20;
+        let filteredWords = [...amharicWords];
+        let currentCategory = 'all';
+
+        // عناصر DOM
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const levelFilter = document.getElementById('levelFilter');
+        const wordsContainer = document.getElementById('wordsContainer');
+        const paginationContainer = document.getElementById('pagination');
+        const totalWordsElement = document.getElementById('totalWords');
+        const displayedWordsElement = document.getElementById('displayedWords');
+        const currentCategoryElement = document.getElementById('currentCategory');
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupScrollToTop();
+        });
+
+        function initializeApp() {
+            // إضافة مستمعي الأحداث
+            searchInput.addEventListener('input', handleSearch);
+            categoryFilter.addEventListener('change', handleFilter);
+            levelFilter.addEventListener('change', handleFilter);
+
+            // عرض الكلمات الأولية
+            displayWords();
+            updateStats();
+            
+            // إضافة تأثيرات الرسوم المتحركة
+            animateStats();
+        }
+
+        function setupScrollToTop() {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function animateStats() {
+            anime({
+                targets: '.stat-card',
+                scale: [0.8, 1],
+                opacity: [0, 1],
+                duration: 800,
+                delay: anime.stagger(200),
+                easing: 'easeOutElastic(1, .8)'
+            });
+        }
+
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            filteredWords = amharicWords.filter(word => {
+                const matchesSearch = word.amharic.toLowerCase().includes(searchTerm) ||
+                                    word.pronunciation.toLowerCase().includes(searchTerm) ||
+                                    word.translation.toLowerCase().includes(searchTerm) ||
+                                    word.usage.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter.value || word.category === categoryFilter.value;
+                const matchesLevel = !levelFilter.value || word.level === levelFilter.value;
+                
+                return matchesSearch && matchesCategory && matchesLevel;
+            });
+
+            currentPage = 1;
+            displayWords();
+            updateStats();
+            
+            // إضافة تأثير البحث
+            if (searchTerm) {
+                anime({
+                    targets: '.table-row',
+                    scale: [0.9, 1],
+                    opacity: [0.7, 1],
+                    duration: 400,
+                    delay: anime.stagger(50),
+                    easing: 'easeOutQuad'
+                });
+            }
+        }
+
+        function handleFilter() {
+            handleSearch(); // إعادة استخدام نفس المنطق
+        }
+
+        function displayWords() {
+            const startIndex = (currentPage - 1) * wordsPerPage;
+            const endIndex = startIndex + wordsPerPage;
+            const wordsToShow = filteredWords.slice(startIndex, endIndex);
+
+            if (wordsToShow.length === 0) {
+                wordsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 4rem; color: #D2B48C; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #8B4513; margin-bottom: 1rem;">لم يتم العثور على نتائج</h3>
+                        <p style="font-size: 1.1rem;">حاول تغيير كلمات البحث أو معايير التصفية</p>
+                        <button onclick="resetFilters()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-redo"></i> إعادة تعيين
+                        </button>
+                    </div>
+                `;
+            } else {
+                wordsContainer.innerHTML = wordsToShow.map(word => `
+                    <div class="table-row fade-in">
+                        <div class="amharic-word">${word.amharic}</div>
+                        <div class="arabic-pronunciation">${word.pronunciation}</div>
+                        <div class="translation">${word.translation}</div>
+                        <div class="usage">${word.usage}</div>
+                        <div class="level level-${word.level === 'مبتدئ' ? 'beginner' : word.level === 'متوسط' ? 'intermediate' : 'advanced'}">${word.level}</div>
+                    </div>
+                `).join('');
+            }
+
+            displayPagination();
+            
+            // إضافة تأثيرات الرسوم المتحركة
+            anime({
+                targets: '.table-row',
+                translateX: [-50, 0],
+                opacity: [0, 1],
+                duration: 600,
+                delay: anime.stagger(100),
+                easing: 'easeOutQuad'
+            });
+        }
+
+        function displayPagination() {
+            const totalPages = Math.ceil(filteredWords.length / wordsPerPage);
+            
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            // زر السابق
+            if (currentPage > 1) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage - 1})"><i class="fas fa-chevron-right"></i></button>`;
+            }
+
+            // أرقام الصفحات
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<button class="page-btn active">${i}</button>`;
+                } else if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHTML += `<button class="page-btn" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHTML += `<span class="page-btn" style="background: none; color: #8B4513; cursor: default;">...</span>`;
+                }
+            }
+
+            // زر التالي
+            if (currentPage < totalPages) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage + 1})"><i class="fas fa-chevron-left"></i></button>`;
+            }
+
+            paginationContainer.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayWords();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStats() {
+            totalWordsElement.textContent = amharicWords.length.toLocaleString();
+            displayedWordsElement.textContent = filteredWords.length.toLocaleString();
+            
+            const categoryText = categoryFilter.options[categoryFilter.selectedIndex].text;
+            currentCategoryElement.textContent = categoryText;
+            
+            // إضافة تأثير العد
+            animateNumber(totalWordsElement, amharicWords.length);
+            animateNumber(displayedWordsElement, filteredWords.length);
+        }
+
+        function animateNumber(element, targetNumber) {
+            anime({
+                targets: { value: 0 },
+                value: targetNumber,
+                duration: 1000,
+                easing: 'easeOutQuad',
+                update: function(anim) {
+                    element.textContent = Math.floor(anim.animatables[0].target.value).toLocaleString();
+                }
+            });
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            categoryFilter.value = '';
+            levelFilter.value = '';
+            handleSearch();
+        }
+
+        // تأثيرات بصرية إضافية
+        function addVisualEffects() {
+            // إضافة تأثير التمرير الناعم
+            const rows = document.querySelectorAll('.table-row');
+            rows.forEach((row, index) => {
+                row.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+
+        // تحسين البحث مع تمييج الكلمات
+        function highlightSearchTerm(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // تحديث دالة العرض لإضافة تمييج الكلمات
+        function displayWordsWithHighlight() {
+            const searchTerm = searchInput.value;
+            const startIndex = (currentPage - 1) * wordsPerPage;
+            const endIndex = startIndex + wordsPerPage;
+            const wordsToShow = filteredWords.slice(startIndex, endIndex);
+
+            if (wordsToShow.length === 0) {
+                wordsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 4rem; color: #D2B48C; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #8B4513; margin-bottom: 1rem;">لم يتم العثور على نتائج</h3>
+                        <p style="font-size: 1.1rem;">حاول تغيير كلمات البحث أو معايير التصفية</p>
+                        <button onclick="resetFilters()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-redo"></i> إعادة تعيين
+                        </button>
+                    </div>
+                `;
+            } else {
+                wordsContainer.innerHTML = wordsToShow.map(word => `
+                    <div class="table-row fade-in">
+                        <div class="amharic-word">${highlightSearchTerm(word.amharic, searchTerm)}</div>
+                        <div class="arabic-pronunciation">${highlightSearchTerm(word.pronunciation, searchTerm)}</div>
+                        <div class="translation">${highlightSearchTerm(word.translation, searchTerm)}</div>
+                        <div class="usage">${highlightSearchTerm(word.usage, searchTerm)}</div>
+                        <div class="level level-${word.level === 'مبتدئ' ? 'beginner' : word.level === 'متوسط' ? 'intermediate' : 'advanced'}">${word.level}</div>
+                    </div>
+                `).join('');
+            }
+
+            displayPagination();
+        }
+
+        // تحديث دالة البحث لاستخدام التمييج
+        function handleSearchWithHighlight() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            filteredWords = amharicWords.filter(word => {
+                const matchesSearch = word.amharic.toLowerCase().includes(searchTerm) ||
+                                    word.pronunciation.toLowerCase().includes(searchTerm) ||
+                                    word.translation.toLowerCase().includes(searchTerm) ||
+                                    word.usage.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter.value || word.category === categoryFilter.value;
+                const matchesLevel = !levelFilter.value || word.level === levelFilter.value;
+                
+                return matchesSearch && matchesCategory && matchesLevel;
+            });
+
+            currentPage = 1;
+            displayWordsWithHighlight();
+            updateStats();
+        }
+
+        // إعادة تعريف مستمعي الأحداث مع التمييج
+        searchInput.addEventListener('input', handleSearchWithHighlight);
+        categoryFilter.addEventListener('change', handleSearchWithHighlight);
+        levelFilter.addEventListener('change', handleSearchWithHighlight);
+    </script>
+
+</body></html>

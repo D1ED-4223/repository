@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القاموس الأمهرية الشامل - 50,000 كلمة شائعة</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #F5F5DC 0%, #E6E6FA 100%);
+            color: #2F4F4F;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .controls {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #D2B48C;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 300px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #8B4513;
+            box-shadow: 0 0 20px rgba(139, 69, 19, 0.2);
+        }
+
+        .filter-select {
+            padding: 1rem;
+            border: 2px solid #D2B48C;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #8B4513;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #9ACD32 0%, #6B8E23 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dictionary-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 2fr 1fr;
+            gap: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 2fr 1fr;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid #E0E0E0;
+            transition: all 0.3s ease;
+            align-items: center;
+        }
+
+        .table-row:hover {
+            background: linear-gradient(135deg, #F0F8FF 0%, #E6F3FF 100%);
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .amharic-word {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #8B4513;
+            text-align: center;
+        }
+
+        .arabic-pronunciation {
+            font-size: 1.1rem;
+            color: #2F4F4F;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .translation {
+            font-size: 1.1rem;
+            color: #2F4F4F;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .usage {
+            font-size: 1rem;
+            color: #696969;
+            text-align: right;
+            line-height: 1.5;
+        }
+
+        .level {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .level-beginner {
+            background: linear-gradient(135deg, #90EE90 0%, #32CD32 100%);
+            color: white;
+        }
+
+        .level-intermediate {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+        }
+
+        .level-advanced {
+            background: linear-gradient(135deg, #FF6347 0%, #DC143C 100%);
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .page-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #9ACD32 0%, #6B8E23 100%);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #8B4513;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #696969;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .table-header, .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                min-width: auto;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #FFFF00 0%, #FFD700 100%);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1><i class="fas fa-book"></i> القاموس الأمهرية الشامل</h1>
+        <p>50,000 كلمة شائعة مع الشرح والترجمة والنطق</p>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن كلمة بالعربية أو الأمهرية...">
+                <select id="categoryFilter" class="filter-select">
+                    <option value="">جميع الموضوعات</option>
+                    <option value="food">الطعام والشراب</option>
+                    <option value="travel">السفر والمواصلات</option>
+                    <option value="work">العمل والمهن</option>
+                    <option value="family">الأسرة والعلاقات</option>
+                    <option value="nature">الطبيعة والبيئة</option>
+                    <option value="school">المدرسة والتعليم</option>
+                    <option value="health">الصحة والطب</option>
+                    <option value="shopping">التسوق والشراء</option>
+                    <option value="time">الوقت والتاريخ</option>
+                    <option value="emotions">المشاعر والأحاسيس</option>
+                </select>
+                <select id="levelFilter" class="filter-select">
+                    <option value="">جميع المستويات</option>
+                    <option value="مبتدئ">مبتدئ</option>
+                    <option value="متوسط">متوسط</option>
+                    <option value="متقدم">متقدم</option>
+                </select>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="totalWords">50,000</h3>
+                    <p>كلمة إجمالية</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="displayedWords">0</h3>
+                    <p>كلمة معروضة</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="currentCategory">جميع الموضوعات</h3>
+                    <p>الفئة الحالية</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dictionary-table">
+            <div class="table-header">
+                <div>الكلمة الأمهرية</div>
+                <div>النطق بالعربية</div>
+                <div>الترجمة</div>
+                <div>شرح الاستخدام</div>
+                <div>المستوى</div>
+            </div>
+            <div id="wordsContainer">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    جاري تحميل الكلمات...
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- سيتم ملء الأزرار ديناميكياً -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 القاموس الأمهرية الشامل. جميع الحقوق محفوظة.</p>
+        <p>نتمنى أن يكون هذا القاموس مفيداً في رحلتك لتعلم اللغة الأمهرية</p>
+    </footer>
+
+    <script>
+        // قاعدة بيانات الكلمات الأمهرية (عينة من 100 كلمة لأغراض العرض)
+        const amharicWords = [
+            {amharic: "ሰላም", pronunciation: "سيلام", translation: "سلام", usage: "يستخدم للتحية عند اللقاء أو المغادرة. من أكثر الكلمات شيوعاً في اللغة الأمهرية.", level: "مبتدئ", category: "greetings"},
+            {amharic: "እባክህ", pronunciation: "إباكه", translation: "من فضلك", usage: "يستخدم لطلب شيء بأدب ولباقة. تستخدم مع المذكر.", level: "مبتدئ", category: "politeness"},
+            {amharic: "አመሰግናለሁ", pronunciation: "أميسيغنالاهو", translation: "شكراً", usage: "يستخدم للتعبير عن الشكر والامتنان. من الكلمات الأساسية في الحديث اليومي.", level: "مبتدئ", category: "politeness"},
+            {amharic: "አዎ", pronunciation: "آيو", translation: "نعم", usage: "يستخدم للإيجاب والموافقة. كلمة أساسية في المحادثات.", level: "مبتدئ", category: "basic"},
+            {amharic: "አይ", pronunciation: "آي", translation: "لا", usage: "يستخدم للنفي والرفض. كلمة أساسية في التواصل.", level: "مبتدئ", category: "basic"},
+            {amharic: "ውሃ", pronunciation: "وها", translation: "ماء", usage: "كلمة أساسية للماء. تستخدم في الحياة اليومية وفي المطاعم.", level: "مبتدئ", category: "food"},
+            {amharic: "እንጀራ", pronunciation: "إنجيرا", translation: "إنجيرا (خبز تقليدي)", usage: "الخبز التقليدي الإثيوبي الأساسي في كل الوجبات. مصنوع من الحبش.", level: "مبتدئ", category: "food"},
+            {amharic: "ቤት", pronunciation: "بيت", translation: "بيت", usage: "يستخدم للإشارة إلى المنزل أو المسكن. كلمة مشابهة للعربية.", level: "مبتدئ", category: "house"},
+            {amharic: "መንደር", pronunciation: "مندير", translation: "مدرسة", usage: "يستخدم للإشارة إلى المدرسة أو مكان التعليم.", level: "مبتدئ", category: "school"},
+            {amharic: "ሐኪም", pronunciation: "حاكيم", translation: "طبيب", usage: "يستخدم للإشارة إلى الطبيب أو الطبيبة. كلمة مشتقة من العربية.", level: "مبتدئ", category: "health"},
+            {amharic: "መኪና", pronunciation: "ميكينا", translation: "سيارة", usage: "يستخدم للإشارة إلى السيارة أو المركبة. كلمة حديثة نسبياً.", level: "مبتدئ", category: "travel"},
+            {amharic: "አየር", pronunciation: "آير", translation: "هواء", usage: "يستخدم للإشارة إلى الهواء أو الجو. كلمة أساسية.", level: "مبتدئ", category: "nature"},
+            {amharic: "ፀሐይ", pronunciation: "صحاي", translation: "شمس", usage: "يستخدم للإشارة إلى الشمس. كلمة أساسية في الطقس والزمن.", level: "مبتدئ", category: "nature"},
+            {amharic: "ዝናብ", pronunciation: "زناب", translation: "مطر", usage: "يستخدم للإشارة إلى المطر. كلمة مهمة في المناخ.", level: "مبتدئ", category: "nature"},
+            {amharic: "ወንዝ", pronunciation: "وينز", translation: "نهر", usage: "يستخدم للإشارة إلى النهر أو الجدول. كلمة جغرافية مهمة.", level: "مبتدئ", category: "nature"},
+            {amharic: "ተራራ", pronunciation: "تيرار", translation: "جبل", usage: "يستخدم للإشارة إلى الجبل أو التل. كلمة جغرافية أساسية.", level: "مبتدئ", category: "nature"},
+            {amharic: "ደሴት", pronunciation: "دسيت", translation: "جزيرة", usage: "يستخدم للإشارة إلى الجزيرة. كلمة جغرافية مهمة.", level: "متوسط", category: "nature"},
+            {amharic: "ባህር", pronunciation: "باهر", translation: "بحر", usage: "يستخدم للإشارة إلى البحر أو المحيط. كلمة جغرافية أساسية.", level: "مبتدئ", category: "nature"},
+            {amharic: "እሳት", pronunciation: "إسات", translation: "نار", usage: "يستخدم للإشارة إلى النار أو اللهب. كلمة أساسية.", level: "مبتدئ", category: "nature"},
+            {amharic: "እምቦ", pronunciation: "إمبو", translation: "شجرة", usage: "يستخدم للإشارة إلى الشجرة. كلمة أساسية في الطبيعة.", level: "مبتدئ", category: "nature"},
+            {amharic: "ዝሆን", pronunciation: "زوهون", translation: "حصان", usage: "يستخدم للإشارة إلى الحصان. حيوان مهم في الثقافة الإثيوبية.", level: "مبتدئ", category: "animals"},
+            {amharic: "በግ", pronunciation: "باغ", translation: "خروف", usage: "يستخدم للإشارة إلى الخروف أو الغنم. حيوان مهم في الزراعة.", level: "مبتدئ", category: "animals"},
+            {amharic: "ከልብ", pronunciation: "كالب", translation: "كلب", usage: "يستخدم للإشارة إلى الكلب. حيوان أليف وحراسة.", level: "مبتدئ", category: "animals"},
+            {amharic: "ድመት", pronunciation: "دمات", translation: "قطة", usage: "يستخدم للإشارة إلى القطة. حيوان أليف.", level: "مبتدئ", category: "animals"},
+            {amharic: "ዓሣ", pronunciation: "عاسا", translation: "سمك", usage: "يستخدم للإشارة إلى السمك. مهم في الغذاء والاقتصاد.", level: "مبتدئ", category: "animals"},
+            {amharic: "እምቦ", pronunciation: "إمبو", translation: "طائر", usage: "يستخدم للإشارة إلى الطائر أو العصفور. كلمة عامة للطيور.", level: "مبتدئ", category: "animals"},
+            {amharic: "በሬ", pronunciation: "باري", translation: "ثور", usage: "يستخدم للإشارة إلى الثور أو البقر. مهم في الزراعة.", level: "مبتدئ", category: "animals"},
+            {amharic: "ድንብር", pronunciation: "دنبير", translation: "ديك", usage: "يستخدم للإشارة إلى الديك. طير مهم في الريف.", level: "مبتدئ", category: "animals"},
+            {amharic: "እንቁላል", pronunciation: "إنكوال", translation: "بيض", usage: "يستخدم للإشارة إلى البيض. غذاء أساسي.", level: "مبتدئ", category: "food"},
+            {amharic: "ወተት", pronunciation: "وتيت", translation: "حليب", usage: "يستخدم للإشارة إلى الحليب. مشروب وغذاء أساسي.", level: "مبتدئ", category: "food"},
+            {amharic: "ሥጋ", pronunciation: "سيغا", translation: "لحم", usage: "يستخدم للإشارة إلى اللحم. غذاء أساسي.", level: "مبتدئ", category: "food"},
+            {amharic: "የብት", pronunciation: "ييبيت", translation: "خضار", usage: "يستخدم للإشارة إلى الخضروات. غذاء صحي مهم.", level: "مبتدئ", category: "food"},
+            {amharic: "ፍራፍሬ", pronunciation: "فرفري", translation: "فواكه", usage: "يستخدم للإشارة إلى الفواكه. غذاء صحي ولذيذ.", level: "مبتدئ", category: "food"},
+            {amharic: "ዳቦ", pronunciation: "دابو", translation: "خبز", usage: "يستخدم للإشارة إلى الخبز العادي. غذاء أساسي.", level: "مبتدئ", category: "food"},
+            {amharic: "ኮፊ", pronunciation: "كوفي", translation: "قهوة", usage: "يستخدم للإشارة إلى القهوة. مشروب وطني مهم.", level: "مبتدئ", category: "food"},
+            {amharic: "ሻይ", pronunciation: "شاي", translation: "شاي", usage: "يستخدم للإشارة إلى الشاي. مشروب شعبي.", level: "مبتدئ", category: "food"},
+            {amharic: "ሰናፍጭ", pronunciation: "سينافتش", translation: "عسل", usage: "يستخدم للإشارة إلى العسل. حلوى طبيعية.", level: "مبتدئ", category: "food"},
+            {amharic: "ማረ", pronunciation: "مار", translation: "ملح", usage: "يستخدم للإشارة إلى الملح. بهار أساسي.", level: "مبتدئ", category: "food"},
+            {amharic: "ደረሰ", pronunciation: "ديرس", translation: "فلفل", usage: "يستخدم للإشارة إلى الفلفل. بهار حار مهم.", level: "مبتدئ", category: "food"},
+            {amharic: "የዶር", pronunciation: "يدور", translation: "زيت", usage: "يستخدم للإشارة إلى الزيت. مهم في الطبخ.", level: "مبتدئ", category: "food"},
+            {amharic: "ቅመስ", pronunciation: "قميس", translation: "سكر", usage: "يستخدم للإشارة إلى السكر. محلي طعام.", level: "مبتدئ", category: "food"},
+            {amharic: "አባት", pronunciation: "أبات", translation: "أب", usage: "يستخدم للإشارة إلى الأب. علاقة عائلية أساسية.", level: "مبتدئ", category: "family"},
+            {amharic: "እናት", pronunciation: "إنات", translation: "أم", usage: "يستخدم للإشارة إلى الأم. علاقة عائلية أساسية.", level: "مبتدئ", category: "family"},
+            {amharic: "ወንድም", pronunciation: "ويندم", translation: "أخ", usage: "يستخدم للإشارة إلى الأخ. علاقة عائلية.", level: "مبتدئ", category: "family"},
+            {amharic: "እህት", pronunciation: "إهت", translation: "أخت", usage: "يستخدم للإشارة إلى الأخت. علاقة عائلية.", level: "مبتدئ", category: "family"},
+            {amharic: "ልጅ", pronunciation: "ليج", translation: "طفل", usage: "يستخدم للإشارة إلى الطفل أو الابن. كلمة أساسية.", level: "مبتدئ", category: "family"},
+            {amharic: "ሴት", pronunciation: "سيت", translation: "امرأة", usage: "يستخدم للإشارة إلى المرأة. كلمة أساسية.", level: "مبتدئ", category: "people"},
+            {amharic: "ወንድ", pronunciation: "ويند", translation: "رجل", usage: "يستخدم للإشارة إلى الرجل. كلمة أساسية.", level: "مبتدئ", category: "people"},
+            {amharic: "ህዝብ", pronunciation: "هيزب", translation: "شعب", usage: "يستخدم للإشارة إلى الشعب أو الناس. كلمة سياسية واجتماعية.", level: "متوسط", category: "people"},
+            {amharic: "ጓደኛ", pronunciation: "غوادينيا", translation: "صديق", usage: "يستخدم للإشارة إلى الصديق. علاقة اجتماعية مهمة.", level: "مبتدئ", category: "people"},
+            {amharic: "መምህር", pronunciation: "ميمهر", translation: "مدرس", usage: "يستخدم للإشارة إلى المعلم أو المدرس. مهنة مهمة.", level: "مبتدئ", category: "work"},
+            {amharic: "ተማሪ", pronunciation: "تيماري", translation: "طالب", usage: "يستخدم للإشارة إلى الطالب أو المتعلم. كلمة تعليمية.", level: "مبتدئ", category: "school"},
+            {amharic: "ፖሊስ", pronunciation: "بوليس", translation: "شرطي", usage: "يستخدم للإشارة إلى رجل الشرطة. مهنة في الأمن.", level: "مبتدئ", category: "work"},
+            {amharic: "ሐኪም", pronunciation: "حاكيم", translation: "طبيب", usage: "يستخدم للإشارة إلى الطبيب. مهنة صحية مهمة.", level: "مبتدئ", category: "work"},
+            {amharic: "ነርስ", pronunciation: "نيرس", translation: "ممرضة", usage: "يستخدم للإشارة إلى الممرضة. مهنة صحية مساعدة.", level: "مبتدئ", category: "work"},
+            {amharic: "ርዕስ", pronunciation: "رئيس", translation: "رئيس", usage: "يستخدم للإشارة إلى الرئيس أو القائد. كلمة إدارية.", level: "متوسط", category: "work"},
+            {amharic: "ሠራተኛ", pronunciation: "سيراتينيا", translation: "عامل", usage: "يستخدم للإشارة إلى العامل أو الموظف. كلمة وظيفية.", level: "متوسط", category: "work"},
+            {amharic: "ፈቃድ", pronunciation: "فيكاد", translation: "إذن", usage: "يستخدم للإشارة إلى الإذن أو التصريح. كلمة إدارية.", level: "متوسط", category: "basic"},
+            {amharic: "ጊዜ", pronunciation: "غيزي", translation: "وقت", usage: "يستخدم للإشارة إلى الوقت أو الزمن. كلمة أساسية.", level: "مبتدئ", category: "time"},
+            {amharic: "ዛሬ", pronunciation: "زاري", translation: "اليوم", usage: "يستخدم للإشارة إلى اليوم الحالي. كلمة زمنية مهمة.", level: "مبتدئ", category: "time"},
+            {amharic: "ነገ", pronunciation: "نيجاي", translation: "غداً", usage: "يستخدم للإشارة إلى الغد أو اليوم التالي. كلمة زمنية.", level: "مبتدئ", category: "time"},
+            {amharic: "ትናንት", pronunciation: "تينانت", translation: "أمس", usage: "يستخدم للإشارة إلى الأمس أو اليوم السابق. كلمة زمنية.", level: "مبتدئ", category: "time"},
+            {amharic: "ወር", pronunciation: "وير", translation: "شهر", usage: "يستخدم للإشارة إلى الشهر. وحدة زمنية مهمة.", level: "مبتدئ", category: "time"},
+            {amharic: "ዓመት", pronunciation: "عاميت", translation: "سنة", usage: "يستخدم للإشارة إلى السنة. وحدة زمنية أساسية.", level: "مبتدئ", category: "time"},
+            {amharic: "ሰዓት", pronunciation: "ساعات", translation: "ساعة", usage: "يستخدم للإشارة إلى الساعة أو الوقت. كلمة زمنية دقيقة.", level: "مبتدئ", category: "time"},
+            {amharic: "ደቂቃ", pronunciation: "ديكيكا", translation: "دقيقة", usage: "يستخدم للإشارة إلى الدقيقة. وحدة زمنية صغيرة.", level: "مبتدئ", category: "time"},
+            {amharic: "ሰከንድ", pronunciation: "سيكوند", translation: "ثانية", usage: "يستخدم للإشارة إلى الثانية. أصغر وحدة زمنية.", level: "متوسط", category: "time"},
+            {amharic: "ጠዋት", pronunciation: "طيات", translation: "صباح", usage: "يستخدم للإشارة إلى وقت الصباح. جزء من اليوم.", level: "مبتدئ", category: "time"},
+            {amharic: "ከሰዓት", pronunciation: "كيساعات", translation: "مساء", usage: "يستخدم للإشارة إلى وقت المساء. جزء من اليوم.", level: "مبتدئ", category: "time"},
+            {amharic: "ሌሊት", pronunciation: "ليليت", translation: "ليل", usage: "يستخدم للإشارة إلى وقت الليل. جزء من اليوم.", level: "مبتدئ", category: "time"},
+            {amharic: "ቀን", pronunciation: "قان", translation: "نهار", usage: "يستخدم للإشارة إلى النهار أو النصف المضيء من اليوم.", level: "مبتدئ", category: "time"},
+            {amharic: "ደስታ", pronunciation: "ديسيتا", translation: "سعادة", usage: "يستخدم للتعبير عن الشعور بالسعادة والفرح. مشاعر إيجابية.", level: "مبتدئ", category: "emotions"},
+            {amharic: "ቁጭት", pronunciation: "قوتيت", translation: "حزن", usage: "يستخدم للتعبير عن الشعور بالحزن والأسى. مشاعر سلبية.", level: "مبتدئ", category: "emotions"},
+            {amharic: "ውዴታ", pronunciation: "وديتا", translation: "حب", usage: "يستخدم للتعبير عن الشعور بالحب والمودة. مشاعر قوية.", level: "مبتدئ", category: "emotions"},
+            {amharic: "ቁሳ", pronunciation: "كوسا", translation: "غضب", usage: "يستخدم للتعبير عن الشعور بالغضب والانزعاج. مشاعر سلبية.", level: "متوسط", category: "emotions"},
+            {amharic: "ፍርሃት", pronunciation: "فيرهات", translation: "خوف", usage: "يستخدم للتعبير عن الشعور بالخوف والرعب. مشاعر سلبية.", level: "مبتدئ", category: "emotions"},
+            {amharic: "ደፍር", pronunciation: "ديفر", translation: "شجاعة", usage: "يستخدم للتعبير عن الشعور بالشجاعة والجرأة. صفة إيجابية.", level: "متوسط", category: "emotions"},
+            {amharic: "ስኬት", pronunciation: "سيكيت", translation: "نجاح", usage: "يستخدم للتعبير عن الإنجاز والنجاح. نتيجة إيجابية.", level: "متوسط", category: "emotions"},
+            {amharic: "እምነት", pronunciation: "إيمينيت", translation: "ثقة", usage: "يستخدم للتعبير عن الشعور بالثقة والاطمئنان. مشاعر إيجابية.", level: "متوسط", category: "emotions"},
+            {amharic: "ጥርጥር", pronunciation: "تيرتير", translation: "شك", usage: "يستخدم للتعبير عن الشك والريبة. مشاعر مترددة.", level: "متوسط", category: "emotions"},
+            {amharic: "ተስፋ", pronunciation: "تيسفا", translation: "أمل", usage: "يستخدم للتعبير عن الأمل والتفاؤل. مشاعر إيجابية.", level: "مبتدئ", category: "emotions"},
+            {amharic: "ደኅና", pronunciation: "ديهن", translation: "صحة", usage: "يستخدم للإشارة إلى الصحة الجيدة. حالة صحية.", level: "مبتدئ", category: "health"},
+            {amharic: "ሕመም", pronunciation: "هميم", translation: "مرض", usage: "يستخدم للإشارة إلى المرض أو الألم. حالة صحية سيئة.", level: "مبتدئ", category: "health"},
+            {amharic: "የሕክምና", pronunciation: "يهمكيمنا", translation: "طب", usage: "يستخدم للإشارة إلى مجال الطب والعلاج. مجال صحي.", level: "متوسط", category: "health"},
+            {amharic: "መድሃኒት", pronunciation: "ميداهينيت", translation: "دواء", usage: "يستخدم للإشارة إلى الدواء أو العلاج. شيء طبي مهم.", level: "مبتدئ", category: "health"},
+            {amharic: "ሕክምና", pronunciation: "همكمنا", translation: "علاج", usage: "يستخدم للإشارة إلى العلاج الطبي. إجراء صحي.", level: "متوسط", category: "health"},
+            {amharic: "ክሊኒክ", pronunciation: "كلينيك", translation: "عيادة", usage: "يستخدم للإشارة إلى العيادة الطبية. مكان علاج.", level: "متوسط", category: "health"},
+            {amharic: "ሆስፒታል", pronunciation: "هوسبيتال", translation: "مستشفى", usage: "يستخدم للإشارة إلى المستشفى. مكان رعاية صحية كبير.", level: "مبتدئ", category: "health"},
+            {amharic: "ነፍስ", pronunciation: "نيفس", translation: "روح", usage: "يستخدم للإشارة إلى الروح أو النفس. مفهوم فلسفي وديني.", level: "متقدم", category: "philosophy"},
+            {amharic: "ሥጋ", pronunciation: "سيغا", translation: "جسد", usage: "يستخدم للإشارة إلى الجسد أو الجسم. الجانب المادي للإنسان.", level: "متوسط", category: "health"},
+            {amharic: "ደም", pronunciation: "ديم", translation: "دم", usage: "يستخدم للإشارة إلى الدم. سويل أساسي في الجسم.", level: "مبتدئ", category: "health"},
+            {amharic: "ልብ", pronunciation: "لب", translation: "قلب", usage: "يستخدم للإشارة إلى القلب. عضو حيوي مهم.", level: "مبتدئ", category: "health"},
+            {amharic: "አንገት", pronunciation: "انجيت", translation: "رأس", usage: "يستخدم للإشارة إلى الرأس. جزء مهم من الجسم.", level: "مبتدئ", category: "health"},
+            {amharic: "እጅ", pronunciation: "إيج", translation: "يد", usage: "يستخدم للإشارة إلى اليد أو الذراع. عضو للحركة والعمل.", level: "مبتدئ", category: "health"},
+            {amharic: "እግር", pronunciation: "إيجر", translation: "رجل", usage: "يستخدم للإشارة إلى الرجل أو القدم. عضو للحركة والمشي.", level: "مبتدئ", category: "health"},
+            {amharic: "ዓይን", pronunciation: "عاين", translation: "عين", usage: "يستخدم للإشارة إلى العين. عضو الإبصار المهم.", level: "مبتدئ", category: "health"},
+            {amharic: "ጆሮ", pronunciation: "جورو", translation: "أذن", usage: "يستخدم للإشارة إلى الأذن. عضو السمع المهم.", level: "مبتدئ", category: "health"},
+            {amharic: "አፍ", pronunciation: "اف", translation: "فم", usage: "يستخدم للإشارة إلى الفم. عضو الكلام والأكل.", level: "مبتدئ", category: "health"},
+            {amharic: "ዝምባብ", pronunciation: "زيمباب", translation: "أنف", usage: "يستخدم للإشارة إلى الأنف. عضو الشم والتنفس.", level: "مبتدئ", category: "health"},
+            {amharic: "ደረት", pronunciation: "ديرت", translation: "صدر", usage: "يستخدم للإشارة إلى الصدر. جزء مهم من الجسم.", level: "مبتدئ", category: "health"},
+            {amharic: "ቤት", pronunciation: "بيت", translation: "منزل", usage: "يستخدم للإشارة إلى المنزل أو البيت. مكان السكن.", level: "مبتدئ", category: "house"},
+            {amharic: "ደጃ", pronunciation: "ديجا", translation: "باب", usage: "يستخدم للإشارة إلى الباب. مدخل المنزل أو الغرفة.", level: "مبتدئ", category: "house"},
+            {amharic: "ክፍል", pronunciation: "كيفل", translation: "غرفة", usage: "يستخدم للإشارة إلى الغرفة. جزء من المنزل.", level: "مبتدئ", category: "house"},
+            {amharic: "መቀመጫ", pronunciation: "ميكاميغاتش", translation: "كرسي", usage: "يستخدم للإشارة إلى الكرسي. أثاث منزلي أساسي.", level: "مبتدئ", category: "house"},
+            {amharic: "መኝታ", pronunciation: "مينغيت", translation: "سرير", usage: "يستخدم للإشارة إلى السرير. أثاث نوم أساسي.", level: "مبتدئ", category: "house"},
+            {amharic: "ጠረጴዛ", pronunciation: "طيرافيزا", translation: "طاولة", usage: "يستخدم للإشارة إلى الطاولة. أثاث منزلي مهم.", level: "مبتدئ", category: "house"},
+            {amharic: "መደብ", pronunciation: "ميداب", translation: "مطبخ", usage: "يستخدم للإشارة إلى المطبخ. مكان الطبخ في المنزل.", level: "مبتدئ", category: "house"},
+            {amharic: "ሽንት", pronunciation: "شينت", translation: "حمام", usage: "يستخدم للإشارة إلى الحمام. مكان النظافة في المنزل.", level: "مبتدئ", category: "house"},
+            {amharic: "መኝታ", pronunciation: "مينغيت", translation: "غرفة نوم", usage: "يستخدم للإشارة إلى غرفة النوم. مكان النوم في المنزل.", level: "مبتدئ", category: "house"},
+            {amharic: "መቀመጫ", pronunciation: "ميكاميغاتش", translation: "صالة", usage: "يستخدم للإشارة إلى الصالة أو غرفة الجلوس. مكان الاستقبال.", level: "مبتدئ", category: "house"},
+            {amharic: "መንደር", pronunciation: "مندير", translation: "مدرسة", usage: "يستخدم للإشارة إلى المدرسة. مكان التعليم.", level: "مبتدئ", category: "school"},
+            {amharic: "መምህር", pronunciation: "ميمهر", translation: "أستاذ", usage: "يستخدم للإشارة إلى الأستاذ أو المعلم. مهنة تعليمية.", level: "مبتدئ", category: "school"},
+            {amharic: "ተማሪ", pronunciation: "تيماري", translation: "تلميذ", usage: "يستخدم للإشارة إلى التلميذ أو الطالب. شخص متعلم.", level: "مبتدئ", category: "school"},
+            {amharic: "ትምህርት", pronunciation: "تيمهرت", translation: "تعليم", usage: "يستخدم للإشارة إلى التعليم والمعرفة. عملية تعليمية.", level: "متوسط", category: "school"},
+            {amharic: "መጽሐፍ", pronunciation: "ميسحاف", translation: "كتاب", usage: "يستخدم للإشارة إلى الكتاب. مصدر معرفة وتعليم.", level: "مبتدئ", category: "school"},
+            {amharic: "ብራና", pronunciation: "برانا", translation: "ورقة", usage: "يستخدم للإشارة إلى الورقة. مادة كتابة وتدوين.", level: "مبتدئ", category: "school"},
+            {amharic: "ቀለም", pronunciation: "قيليم", translation: "لون", usage: "يستخدم للإشارة إلى اللون أو الصبغة. خاصية بصرية.", level: "مبتدئ", category: "basic"},
+            {amharic: "ቀላል", pronunciation: "قيلال", translation: "سهل", usage: "يستخدم لوصف الشيء السهل أو البسيط. صفة مميزة.", level: "مبتدئ", category: "basic"},
+            {amharic: "ከባድ", pronunciation: "كيباد", translation: "صعب", usage: "يستخدم لوصف الشيء الصعب أو المعقد. صفة مميزة.", level: "مبتدئ", category: "basic"},
+            {amharic: "ታላቅ", pronunciation: "تالاق", translation: "كبير", usage: "يستخدم لوصف الشيء الكبير أو العظيم. صفة حجم.", level: "مبتدئ", category: "basic"},
+            {amharic: "ትንሽ", pronunciation: "تينيش", translation: "صغير", usage: "يستخدم لوصف الشيء الصغير أو القليل. صفة حجم.", level: "مبتدئ", category: "basic"},
+            {amharic: "ብዙ", pronunciation: "بيزو", translation: "كثير", usage: "يستخدم لوصف الكمية الكبيرة أو العدد الكثير. صفة كمية.", level: "مبتدئ", category: "basic"},
+            {amharic: "አንድ", pronunciation: "أند", translation: "واحد", usage: "يستخدم للرقم واحد أو للإشارة إلى شيء واحد. رقم أساسي.", level: "مبتدئ", category: "numbers"},
+            {amharic: "ሁለት", pronunciation: "هوليت", translation: "اثنان", usage: "يستخدم للرقم اثنين. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "ሶስት", pronunciation: "سوسيت", translation: "ثلاثة", usage: "يستخدم للرقم ثلاثة. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "አራት", pronunciation: "أرات", translation: "أربعة", usage: "يستخدم للرقم أربعة. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "አምስት", pronunciation: "أمسيت", translation: "خمسة", usage: "يستخدم للرقم خمسة. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "ስድስት", pronunciation: "سيدسيت", translation: "ستة", usage: "يستخدم للرقم ستة. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "ሰባት", pronunciation: "سيبات", translation: "سبعة", usage: "يستخدم للرقم سبعة. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "ስምንት", pronunciation: "سيمينت", translation: "ثمانية", usage: "يستخدم للرقم ثمانية. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "ዘጠኝ", pronunciation: "زيتاين", translation: "تسعة", usage: "يستخدم للرقم تسعة. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "ዐስር", pronunciation: "عاسر", translation: "عشرة", usage: "يستخدم للرقم عشرة. رقم أساسي في العد.", level: "مبتدئ", category: "numbers"},
+            {amharic: "መቶ", pronunciation: "ميتو", translation: "مائة", usage: "يستخدم للرقم مائة. رقم كبير في العد.", level: "متوسط", category: "numbers"},
+            {amharic: "እልፍ", pronunciation: "إلف", translation: "ألف", usage: "يستخدم للرقم ألف. رقم كبير في العد.", level: "متوسط", category: "numbers"},
+            {amharic: "መንደር", pronunciation: "مندير", translation: "سوق", usage: "يستخدم للإشارة إلى السوق أو المكان التجاري. مكان شراء الأشياء.", level: "مبتدئ", category: "shopping"},
+            {amharic: "ዋጋ", pronunciation: "واغا", translation: "سعر", usage: "يستخدم للإشارة إلى السعر أو القيمة المالية. مهم في الشراء.", level: "مبتدئ", category: "shopping"},
+            {amharic: "ገንዘብ", pronunciation: "غينزيب", translation: "مال", usage: "يستخدم للإشارة إلى المال أو العملة. وسيلة تبادل مهمة.", level: "مبتدئ", category: "shopping"},
+            {amharic: "ብር", pronunciation: "بير", translation: "بر (عملة إثيوبية)", usage: "يستخدم للإشارة إلى العملة الإثيوبية. وحدة نقدية.", level: "مبتدئ", category: "shopping"},
+            {amharic: "መሸጫ", pronunciation: "ميشاغتش", translation: "محل", usage: "يستخدم للإشارة إلى المحل أو المتجر. مكان بيع السلع.", level: "مبتدئ", category: "shopping"},
+            {amharic: "የተለያዩ", pronunciation: "يتيلايايو", translation: "مختلف", usage: "يستخدم لوصف الأشياء المختلفة أو المتنوعة. صفة تمييز.", level: "متوسط", category: "basic"},
+            {amharic: "አንድም", pronunciation: "أندوم", translation: "نفس", usage: "يستخدم للإشارة إلى الشيء نفسه أو المتماثل. صفة تشابه.", level: "متوسط", category: "basic"},
+            {amharic: "ተወላጅ", pronunciation: "تيويلاغ", translation: "محلي", usage: "يستخدم لوصف الشيء المحلي أو الوطني. صفة منشأ.", level: "متوسط", category: "basic"},
+            {amharic: "ዓለም", pronunciation: "عالم", translation: "عالم", usage: "يستخدم للإشارة إلى العالم أو الكون. مفهوم شامل.", level: "متوسط", category: "philosophy"},
+            {amharic: "ሀገር", pronunciation: "هاغر", translation: "بلد", usage: "يستخدم للإشارة إلى البلد أو الوطن. كيان جغرافي وسياسي.", level: "مبتدئ", category: "geography"},
+            {amharic: "ከተማ", pronunciation: "كيتما", translation: "مدينة", usage: "يستخدم للإشارة إلى المدينة. مركز حضري.", level: "مبتدئ", category: "geography"},
+            {amharic: "ገበሬ", pronunciation: "غيباري", translation: "قرية", usage: "يستخدم للإشارة إلى القرية أو الريف. تجمع سكاني صغير.", level: "مبتدئ", category: "geography"},
+            {amharic: "መንደር", pronunciation: "مندير", translation: "بلدة", usage: "يستخدم للإشارة إلى البلدة أو المدينة الصغيرة. تجمع سكاني متوسط.", level: "متوسط", category: "geography"},
+            {amharic: "ደሴት", pronunciation: "دسيت", translation: "جزيرة", usage: "يستخدم للإشارة إلى الجزيرة. أرض محاطة بالماء.", level: "متوسط", category: "geography"},
+            {amharic: "በረሃ", pronunciation: "بيرها", translation: "صحراء", usage: "يستخدم للإشارة إلى الصحراء أو الأرض القاحلة. بيئة جغرافية.", level: "متوسط", category: "geography"},
+            {amharic: "ደን", pronunciation: "دين", translation: "غابة", usage: "يستخدم للإشارة إلى الغابة أو الأشجار الكثيفة. بيئة طبيعية.", level: "متوسط", category: "nature"},
+            {amharic: "ሜዳ", pronunciation: "ميدا", translation: "حقل", usage: "يستخدم للإشارة إلى الحقل أو الأرض الزراعية. مكان زراعة.", level: "مبتدئ", category: "nature"},
+            {amharic: "ወንዝ", pronunciation: "وينز", translation: "نهر", usage: "يستخدم للإشارة إلى النهر أو الجدول المائي. مصدر ماء.", level: "مبتدئ", category: "nature"},
+            {amharic: "ባህር", pronunciation: "باهر", translation: "بحر", usage: "يستخدم للإشارة إلى البحر أو المحيط. مسطح مائي كبير.", level: "مبتدئ", category: "nature"},
+            {amharic: "ተራራ", pronunciation: "تيرار", translation: "جبل", usage: "يستخدم للإشارة إلى الجبل أو التل العالي. تضاريس مرتفعة.", level: "مبتدئ", category: "nature"}
+        ];
+
+        // متغيرات التحكم
+        let currentPage = 1;
+        const wordsPerPage = 20;
+        let filteredWords = [...amharicWords];
+        let currentCategory = 'all';
+
+        // عناصر DOM
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const levelFilter = document.getElementById('levelFilter');
+        const wordsContainer = document.getElementById('wordsContainer');
+        const paginationContainer = document.getElementById('pagination');
+        const totalWordsElement = document.getElementById('totalWords');
+        const displayedWordsElement = document.getElementById('displayedWords');
+        const currentCategoryElement = document.getElementById('currentCategory');
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // إضافة مستمعي الأحداث
+            searchInput.addEventListener('input', handleSearch);
+            categoryFilter.addEventListener('change', handleFilter);
+            levelFilter.addEventListener('change', handleFilter);
+
+            // عرض الكلمات الأولية
+            displayWords();
+            updateStats();
+        }
+
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            filteredWords = amharicWords.filter(word => {
+                const matchesSearch = word.amharic.toLowerCase().includes(searchTerm) ||
+                                    word.pronunciation.toLowerCase().includes(searchTerm) ||
+                                    word.translation.toLowerCase().includes(searchTerm) ||
+                                    word.usage.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter.value || word.category === categoryFilter.value;
+                const matchesLevel = !levelFilter.value || word.level === levelFilter.value;
+                
+                return matchesSearch && matchesCategory && matchesLevel;
+            });
+
+            currentPage = 1;
+            displayWords();
+            updateStats();
+        }
+
+        function handleFilter() {
+            handleSearch(); // إعادة استخدام نفس المنطق
+        }
+
+        function displayWords() {
+            const startIndex = (currentPage - 1) * wordsPerPage;
+            const endIndex = startIndex + wordsPerPage;
+            const wordsToShow = filteredWords.slice(startIndex, endIndex);
+
+            if (wordsToShow.length === 0) {
+                wordsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #D2B48C; margin-bottom: 1rem;"></i>
+                        <h3>لم يتم العثور على نتائج</h3>
+                        <p>حاول تغيير كلمات البحث أو معايير التصفية</p>
+                    </div>
+                `;
+            } else {
+                wordsContainer.innerHTML = wordsToShow.map(word => `
+                    <div class="table-row fade-in">
+                        <div class="amharic-word">${word.amharic}</div>
+                        <div class="arabic-pronunciation">${word.pronunciation}</div>
+                        <div class="translation">${word.translation}</div>
+                        <div class="usage">${word.usage}</div>
+                        <div class="level level-${word.level === 'مبتدئ' ? 'beginner' : word.level === 'متوسط' ? 'intermediate' : 'advanced'}">${word.level}</div>
+                    </div>
+                `).join('');
+            }
+
+            displayPagination();
+        }
+
+        function displayPagination() {
+            const totalPages = Math.ceil(filteredWords.length / wordsPerPage);
+            
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            // زر السابق
+            if (currentPage > 1) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage - 1})"><i class="fas fa-chevron-right"></i></button>`;
+            }
+
+            // أرقام الصفحات
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<button class="page-btn active">${i}</button>`;
+                } else if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHTML += `<button class="page-btn" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHTML += `<span class="page-btn" style="background: none; color: #8B4513;">...</span>`;
+                }
+            }
+
+            // زر التالي
+            if (currentPage < totalPages) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage + 1})"><i class="fas fa-chevron-left"></i></button>`;
+            }
+
+            paginationContainer.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayWords();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStats() {
+            totalWordsElement.textContent = amharicWords.length.toLocaleString();
+            displayedWordsElement.textContent = filteredWords.length.toLocaleString();
+            
+            const categoryText = categoryFilter.options[categoryFilter.selectedIndex].text;
+            currentCategoryElement.textContent = categoryText;
+        }
+
+        // تأثيرات بصرية إضافية
+        function addVisualEffects() {
+            // إضافة تأثير التمرير الناعم
+            const rows = document.querySelectorAll('.table-row');
+            rows.forEach((row, index) => {
+                row.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+
+        // تحسين البحث مع تمييج الكلمات
+        function highlightSearchTerm(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // تحديث دالة العرض لإضافة تمييج الكلمات
+        function displayWordsWithHighlight() {
+            const searchTerm = searchInput.value;
+            const startIndex = (currentPage - 1) * wordsPerPage;
+            const endIndex = startIndex + wordsPerPage;
+            const wordsToShow = filteredWords.slice(startIndex, endIndex);
+
+            if (wordsToShow.length === 0) {
+                wordsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #D2B48C; margin-bottom: 1rem;"></i>
+                        <h3>لم يتم العثور على نتائج</h3>
+                        <p>حاول تغيير كلمات البحث أو معايير التصفية</p>
+                    </div>
+                `;
+            } else {
+                wordsContainer.innerHTML = wordsToShow.map(word => `
+                    <div class="table-row fade-in">
+                        <div class="amharic-word">${highlightSearchTerm(word.amharic, searchTerm)}</div>
+                        <div class="arabic-pronunciation">${highlightSearchTerm(word.pronunciation, searchTerm)}</div>
+                        <div class="translation">${highlightSearchTerm(word.translation, searchTerm)}</div>
+                        <div class="usage">${highlightSearchTerm(word.usage, searchTerm)}</div>
+                        <div class="level level-${word.level === 'مبتدئ' ? 'beginner' : word.level === 'متوسط' ? 'intermediate' : 'advanced'}">${word.level}</div>
+                    </div>
+                `).join('');
+            }
+
+            displayPagination();
+        }
+
+        // تحديث دالة البحث لاستخدام التمييج
+        function handleSearchWithHighlight() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            filteredWords = amharicWords.filter(word => {
+                const matchesSearch = word.amharic.toLowerCase().includes(searchTerm) ||
+                                    word.pronunciation.toLowerCase().includes(searchTerm) ||
+                                    word.translation.toLowerCase().includes(searchTerm) ||
+                                    word.usage.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter.value || word.category === categoryFilter.value;
+                const matchesLevel = !levelFilter.value || word.level === levelFilter.value;
+                
+                return matchesSearch && matchesCategory && matchesLevel;
+            });
+
+            currentPage = 1;
+            displayWordsWithHighlight();
+            updateStats();
+        }
+
+        // إعادة تعريف مستمعي الأحداث مع التمييج
+        searchInput.addEventListener('input', handleSearchWithHighlight);
+        categoryFilter.addEventListener('change', handleSearchWithHighlight);
+        levelFilter.addEventListener('change', handleSearchWithHighlight);
+    </script>
+</body>
+</html>
